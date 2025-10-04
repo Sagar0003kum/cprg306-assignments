@@ -18,9 +18,7 @@ export default function NewItem() {
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-sm">
-      <h2 className="text-xl font-semibold mb-4 text-center">Add New Item</h2>
-
+    <div className="bg-black p-6 rounded-lg shadow-md w-full max-w-sm">
       <div className="flex items-center justify-center gap-4">
         <button
           onClick={decrement}
@@ -43,7 +41,6 @@ export default function NewItem() {
         </button>
       </div>
 
-      <p className="mt-4 text-center text-gray-600">Quantity must be between 1 and 20.</p>
-    </div>
+      </div>
   );
 }
