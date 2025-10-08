@@ -1,12 +1,14 @@
-import ItemList from "./item-list.js";
+import ItemList from "./item-list";
 
 export default function Page() {
   return (
-    <main>
-      <div className="w-full flex justify-center items-start py-2">
-        <h1 className="text-5xl">Shopping List</h1>
+    <main className="p-6 bg-gradient-to-b from-blue-50 to-indigo-100 min-h-screen">
+      <h1 className="text-4xl font-bold text-center text-indigo-700 mb-8">
+        Shopping List
+      </h1>
+      <div className="max-w-md mx-auto">
+        <ItemList />
       </div>
-      <ItemList />
     </main>
   );
 }
