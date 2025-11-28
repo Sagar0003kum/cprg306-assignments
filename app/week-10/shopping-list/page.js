@@ -1,10 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useUserAuth } from "./_utils/auth-context";
-import NewItem from "./shopping-list/new-item";
-import ItemList from "./shopping-list/item-list";
-import { getItems, addItem } from "./_services/shopping-list-service";
+// 1. Corrected: Added '../' to go up to week-10 folder
+import { useUserAuth } from "../_utils/auth-context"; 
+// 2. Corrected: Removed 'shopping-list/' because new-item is a sibling file
+import NewItem from "./new-item"; 
+// 3. Corrected: Removed 'shopping-list/' because item-list is a sibling file
+import ItemList from "./item-list"; 
+// 4. Corrected: Added '../' to go up to week-10 folder
+import { getItems, addItem } from "../_services/shopping-list-service";
 
 export default function Page() {
   const { user, gitHubSignIn, firebaseSignOut } = useUserAuth();
