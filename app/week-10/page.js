@@ -35,7 +35,9 @@ export default function Page() {
         <h1 className="text-4xl font-bold text-indigo-400 mb-4">
           Week 10 – Cloud Firestore App
         </h1>
-        <p className="text-gray-300 mb-6">Please sign in with GitHub to continue.</p>
+        <p className="text-gray-300 mb-6">
+          Please sign in with GitHub to continue.
+        </p>
         <button
           onClick={gitHubSignIn}
           className="bg-purple-600 hover:bg-purple-700 px-6 py-3 rounded-lg font-semibold"
