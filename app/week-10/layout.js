@@ -1,5 +1,11 @@
-import { AuthContextProvider } from "./_utils/auth-context";
+"use client";
+
+import { UserAuthContextProvider } from "./_utils/auth-context";
 
 export default function Layout({ children }) {
-  return <AuthContextProvider>{children}</AuthContextProvider>;
+  return (
+    <UserAuthContextProvider>
+      {children}
+    </UserAuthContextProvider>
+  );
 }
