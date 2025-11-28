@@ -6,7 +6,6 @@ import ItemList from "./item-list";
 import MealIdeas from "./meal-ideas";
 
 export default function Page() {
-  const [items, setItems] = useState(itemsData);
   const [selectedItemName, setSelectedItemName] = useState("");
 
   function handleAddItem(newItem) {
