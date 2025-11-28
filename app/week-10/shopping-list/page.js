@@ -1,40 +1,86 @@
 "use client";
 
-import { useState } from "react";
-import NewItem from "./new-item";
-import ItemList from "./item-list";
-import MealIdeas from "./meal-ideas";
+import { useEffect, useState } from "react";
+import { useUserAuth } from "./_utils/auth-context";
+import NewItem from "./shopping-list/new-item";
+import ItemList from "./shopping-list/item-list";
+import { getItems, addItem } from "./_services/shopping-list-service";
 
 export default function Page() {
-  const [selectedItemName, setSelectedItemName] = useState("");
+  const { user, gitHubSignIn, firebaseSignOut } = useUserAuth();
+  const [items, setItems] = useState([]);
+  const [showList, setShowList] = useState(false);
 
-  function handleAddItem(newItem) {
-    setItems((prev) => [...prev, newItem]);
+  async function loadItems() {
+    if (user) {
+      const userItems = await getItems(user.uid);
+      setItems(userItems);
+    }
   }
 
-  function handleItemSelect(name) {
-    const cleaned = name
-      .split(",")[0]
-      .replace(/[^\p{L}\p{N}\s]/gu, "") // remove emojis/punctuation
-      .trim()
-      .toLowerCase();
-    setSelectedItemName(cleaned);
+  useEffect(() => {
+    loadItems();
+  }, [user]);
+
+  async function handleAddItem(newItem) {
+    if (user) {
+      const id = await addItem(user.uid, newItem);
+      setItems([...items, { id, ...newItem }]);
+    }
+  }
+
+  if (!user) {
+    return (
+      <main className="bg-slate-950 min-h-screen flex flex-col items-center justify-center text-white">
+        <h1 className="text-4xl font-bold text-indigo-400 mb-4">
+          Week 10 – Cloud Firestore App
+        </h1>
+        <p className="text-gray-300 mb-6">Please sign in with GitHub to continue.</p>
+        <button
+          onClick={gitHubSignIn}
+          className="bg-purple-600 hover:bg-purple-700 px-6 py-3 rounded-lg font-semibold"
+        >
+          Sign in with GitHub
+        </button>
+      </main>
+    );
+  }
+
+  if (user && !showList) {
+    return (
+      <main className="bg-slate-950 min-h-screen flex flex-col items-center justify-center text-white">
+        <h1 className="text-4xl font-bold text-indigo-400 mb-4">
+          Welcome, {user.displayName || user.email.split("@")[0]}
+        </h1>
+        <img
+          src={user.photoURL}
+          alt="Profile"
+          className="w-28 h-28 rounded-full border-4 border-indigo-400 mb-4"
+        />
+        <p className="text-gray-300 mb-4">{user.email}</p>
+        <button
+          onClick={() => setShowList(true)}
+          className="text-indigo-400 underline mb-6"
+        >
+          Go to Shopping List
+        </button>
+        <button
+          onClick={firebaseSignOut}
+          className="bg-red-600 hover:bg-red-700 px-6 py-3 rounded-lg font-semibold"
+        >
+          Log Out
+        </button>
+      </main>
+    );
   }
 
   return (
-    <main className="bg-slate-950 min-h-screen p-8 flex flex-col items-center">
-      <h1 className="text-4xl font-bold text-indigo-400 mb-8">
-        Week 8 – Meal Ideas App
+    <main className="bg-slate-900 min-h-screen p-6 text-white">
+      <h1 className="text-3xl font-bold text-indigo-400 mb-6">
+        Shopping List – {user.displayName || user.email}
       </h1>
-
-      <div className="flex flex-col md:flex-row gap-10 w-full justify-center">
-        <div className="flex flex-col items-center">
-          <NewItem onAddItem={handleAddItem} />
-          <ItemList items={items} onItemSelect={handleItemSelect} />
-        </div>
-
-        <MealIdeas ingredient={selectedItemName} />
-      </div>
+      <NewItem onAddItem={handleAddItem} />
+      <ItemList items={items} />
     </main>
   );
 }
